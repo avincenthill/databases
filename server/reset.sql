@@ -1,4 +1,3 @@
 USE chat;
 
-/* kill all */
-DROP DATABASE;
+DROP DATABASE chat;
