@@ -1,5 +1,6 @@
 var express = require('express');
-var db = require('./db');
+
+var db = require('./db'); //TBD why is this imported?
 
 // Middleware
 var morgan = require('morgan');

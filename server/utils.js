@@ -13,6 +13,7 @@ exports.sendResponse = function(response, data, statusCode) {
 };
 
 exports.collectData = function(request, callback) {
+  console.log('utils.collectData was fired');
   var data = '';
   request.on('data', function(chunk) {
     data += chunk;
