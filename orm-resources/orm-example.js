@@ -25,11 +25,11 @@ var Message = db.define('Message', {
 User.sync()
   .then(function() {
     // Now instantiate an object and save it:
-    return User.create({username: 'Jean Valjean'});
+    return User.create({ username: 'Jean Valjean' });
   })
   .then(function() {
     // Retrieve objects from the database:
-    return User.findAll({ where: {username: 'Jean Valjean'} });
+    return User.findAll({ where: { username: 'Jean Valjean' } });
   })
   .then(function(users) {
     users.forEach(function(user) {
