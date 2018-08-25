@@ -13,3 +13,9 @@ exports.dbConnection.connect(err => {
   }
   console.log('Connected to database "chat"!');
 });
+
+/*
+mysql -u student < ./server/schema.sql
+
+mysql -u student < ./server/reset.sql
+*/

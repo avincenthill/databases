@@ -1,3 +1,7 @@
+USE chat;
+
+DROP DATABASE chat;
+
 CREATE DATABASE chat;
 
 USE chat;
@@ -5,25 +9,28 @@ USE chat;
 DROP TABLE IF EXISTS `messages`;
 
 CREATE TABLE `messages` (
-  `id` INT PRIMARY KEY,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `text` TEXT NULL,
   `id_rooms` INT NULL,
   `id_users` INT NULL,
   `timestamp` TEXT NULL,
+  PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `id` INT NOT NULL PRIMARY KEY,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` TEXT NULL,
+  PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS `rooms`;
 
 CREATE TABLE `rooms` (
-  `id` INT NOT NULL PRIMARY KEY,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` TEXT NULL,
+  PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS `friendships`;
