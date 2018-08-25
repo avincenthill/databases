@@ -1,9 +1,7 @@
-
 var app = {
-
   //TODO: The current 'handleUsernameClick' function just toggles the class 'friend'
   //to all messages sent by the user
-  server: 'http://parse.CAMPUS.hackreactor.com/chatterbox/classes/messages', //TBD fix this
+  server: 'http://127.0.0.1:3000/classes',
   username: 'anonymous',
   roomname: 'lobby',
   lastMessageId: 0,
@@ -36,22 +34,23 @@ var app = {
   },
 
   send: function(message) {
-    app.startSpinner();
+    // app.startSpinner();
+    console.log('send fired in client');
 
     // POST the message to the server
     $.ajax({
-      url: app.server,
+      url: 'http://127.0.0.1:3000/classes/messages',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
-      success: function (data) {
+      success: function(data) {
         // Clear messages input
         app.$message.val('');
 
         // Trigger a fetch to update the messages, pass true to animate
         app.fetch();
       },
-      error: function (error) {
+      error: function(error) {
         console.error('chatterbox: Failed to send message', error);
       }
     });
@@ -59,12 +58,14 @@ var app = {
 
   fetch: function(animate) {
     $.ajax({
-      url: app.server,
+      url: 'http://127.0.0.1:3000/classes/messages',
       type: 'GET',
-      data: { order: '-createdAt' },
+      // data: { order: '-createdAt' },
       success: function(data) {
         // Don't bother if we have nothing to work with
-        if (!data.results || !data.results.length) { return; }
+        if (!data.results || !data.results.length) {
+          return;
+        }
 
         // Store messages for caching later
         app.messages = data.results;
@@ -102,15 +103,17 @@ var app = {
       // Add all fetched messages that are in our current room
       messages
         .filter(function(message) {
-          return message.roomname === app.roomname ||
-                 app.roomname === 'lobby' && !message.roomname;
+          return (
+            message.roomname === app.roomname ||
+            (app.roomname === 'lobby' && !message.roomname)
+          );
         })
         .forEach(app.renderMessage);
     }
 
     // Make it scroll to the top
     if (animate) {
-      $('body').animate({scrollTop: '0px'}, 'fast');
+      $('body').animate({ scrollTop: '0px' }, 'fast');
     }
   },
 
@@ -137,7 +140,9 @@ var app = {
 
   renderRoom: function(roomname) {
     // Prevent XSS by escaping with DOM methods
-    var $option = $('<option/>').val(roomname).text(roomname);
+    var $option = $('<option/>')
+      .val(roomname)
+      .text(roomname);
 
     // Add to select
     app.$roomSelect.append($option);
@@ -154,7 +159,11 @@ var app = {
     // Add in the message data using DOM methods to avoid XSS
     // Store the username in the element's data attribute
     var $username = $('<span class="username"/>');
-    $username.text(message.username + ': ').attr('data-roomname', message.roomname).attr('data-username', message.username).appendTo($chat);
+    $username
+      .text(message.username + ': ')
+      .attr('data-roomname', message.roomname)
+      .attr('data-username', message.username)
+      .appendTo($chat);
 
     // Add the friend class
     if (app.friends[message.username] === true) {
@@ -166,11 +175,9 @@ var app = {
 
     // Add the message to the UI
     app.$chats.append($chat);
-
   },
 
   handleUsernameClick: function(event) {
-
     // Get username from data attribute
     var username = $(event.target).data('username');
 
@@ -179,7 +186,7 @@ var app = {
       app.friends[username] = !app.friends[username];
 
       // Escape the username in case it contains a quote
-      var selector = '[data-username="' + username.replace(/"/g, '\\\"') + '"]';
+      var selector = '[data-username="' + username.replace(/"/g, '\\"') + '"]';
 
       // Add 'friend' CSS class to all of that user's messages
       var $usernames = $(selector).toggleClass('friend');
@@ -187,7 +194,6 @@ var app = {
   },
 
   handleRoomChange: function(event) {
-
     var selectIndex = app.$roomSelect.prop('selectedIndex');
     // New room is always the first option
     if (selectIndex === 0) {
@@ -217,7 +223,7 @@ var app = {
       text: app.$message.val(),
       roomname: app.roomname || 'lobby'
     };
-
+    // console.log('clicked submit');
     app.send(message);
 
     // Stop the form from submitting
@@ -225,12 +231,12 @@ var app = {
   },
 
   startSpinner: function() {
-    $('.spinner img').show();
-    $('form input[type=submit]').attr('disabled', 'true');
+    // $('.spinner img').show();
+    // $('form input[type=submit]').attr('disabled', 'true');
   },
 
   stopSpinner: function() {
-    $('.spinner img').fadeOut('fast');
-    $('form input[type=submit]').attr('disabled', null);
+    // $('.spinner img').fadeOut('fast');
+    // $('form input[type=submit]').attr('disabled', null);
   }
 };
