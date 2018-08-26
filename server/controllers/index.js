@@ -22,12 +22,13 @@ module.exports = {
       });
     },
     post: function(req, res) {
+      console.log(req.body);
       db.User.findOrCreate({
         where: { username: req.body.username }
       }).spread(user => {
         db.Message.create({
-          userid: user.id,
-          text: req.body.message,
+          userId: user.id,
+          text: req.body.text,
           roomname: req.body.roomname
         }).then(message => {
           res.sendStatus(201);

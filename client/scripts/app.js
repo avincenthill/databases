@@ -163,9 +163,9 @@ var app = {
     // Store the username in the element's data attribute
     var $username = $('<span class="username"/>');
     $username
-      .text(message.username + ': ')
+      .text(message.user.username + ': ')
       .attr('data-roomname', message.roomname)
-      .attr('data-username', message.username)
+      .attr('data-username', message.user.username)
       .appendTo($chat);
 
     // Add the friend class
